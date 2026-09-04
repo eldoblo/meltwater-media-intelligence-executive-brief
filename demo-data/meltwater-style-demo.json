@@ -1,0 +1,22 @@
+{
+  "source_mode": "DEMO",
+  "brand": "AegisLayer (fictional cybersecurity technology company)",
+  "period_start": "2026-08-25",
+  "period_end": "2026-08-31",
+  "previous_period_mention_count": 8,
+  "mentions": [
+    {"published_at":"2026-08-25T08:10:00Z","headline":"Why attack-surface visibility is becoming a board topic","source":"Security Ledger","author":"Maya Chen","sentiment":"positive","reach":82000,"country":"US","themes":["attack-surface visibility","board-level risk"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-25T12:40:00Z","headline":"AegisLayer adds context to cloud exposure alerts","source":"CloudSec Weekly","author":"Jon Bell","sentiment":"positive","reach":36000,"country":"UK","themes":["cloud risk","attack-surface visibility"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-26T09:05:00Z","headline":"Security leaders compare exposure-management platforms","source":"Enterprise IT Review","author":"Priya Nair","sentiment":"neutral","reach":54000,"country":"IN","themes":["attack-surface visibility","competitive evaluation"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-26T16:20:00Z","headline":"A practical checklist for breach disclosure readiness","source":"Risk & Resilience Journal","author":"Luis Ortega","sentiment":"positive","reach":29000,"country":"ES","themes":["breach disclosure readiness","board-level risk"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-27T07:50:00Z","headline":"Practitioners debate alert fatigue in exposure management","source":"r/SaaS Security Forum","author":"community moderator","sentiment":"negative","reach":18000,"country":"US","themes":["alert fatigue","cloud risk"],"competitor":"AegisLayer","share_of_voice":0.42,"risk_signal":"product complexity concern"},
+    {"published_at":"2026-08-27T14:15:00Z","headline":"Analyst note: exposure management moves toward continuous evidence","source":"Tech Market Brief","author":"Owen Price","sentiment":"positive","reach":67000,"country":"US","themes":["analyst validation","attack-surface visibility"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-28T11:30:00Z","headline":"What CISOs want from the next generation of security dashboards","source":"CISO Network","author":"Hana Ibrahim","sentiment":"neutral","reach":41000,"country":"AE","themes":["board-level risk","analyst validation"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-29T06:25:00Z","headline":"AegisLayer partners with a regional cloud consultancy","source":"Gulf Technology News","author":"Samir Haddad","sentiment":"positive","reach":25000,"country":"AE","themes":["cloud risk","regional adoption"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-29T15:45:00Z","headline":"Security buyers ask for clearer pricing units","source":"Tech Buyers Forum","author":"community moderator","sentiment":"negative","reach":12000,"country":"CA","themes":["pricing clarity","competitive evaluation"],"competitor":"AegisLayer","share_of_voice":0.42,"risk_signal":"pricing clarity concern"},
+    {"published_at":"2026-08-30T10:05:00Z","headline":"Continuous exposure evidence enters the CISO vocabulary","source":"The Digital Enterprise","author":"Nadia Rahman","sentiment":"positive","reach":73000,"country":"SG","themes":["analyst validation","breach disclosure readiness"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-30T18:35:00Z","headline":"Can security teams explain exposure without more dashboards?","source":"Security Practitioners Podcast","author":"Eli Morgan","sentiment":"neutral","reach":33000,"country":"US","themes":["alert fatigue","board-level risk"],"competitor":"AegisLayer","share_of_voice":0.42},
+    {"published_at":"2026-08-31T09:15:00Z","headline":"The case for evidence-led incident communications","source":"Cyber Risk Today","author":"Maya Chen","sentiment":"positive","reach":61000,"country":"US","themes":["breach disclosure readiness","regional adoption"],"competitor":"AegisLayer","share_of_voice":0.42}
+  ],
+  "competitor_share_of_voice": {"AegisLayer":0.42,"Northstar Sentinel":0.31,"CloudFence":0.27}
+}

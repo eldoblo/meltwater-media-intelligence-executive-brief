@@ -1,0 +1,364 @@
+{
+  "name": "Meltwater Media Intelligence → Executive Communications Brief",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Run Brief",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "m1",
+              "name": "input_mode",
+              "value": "DEMO",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2",
+      "name": "Mode Selector",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.input_mode }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "DEMO"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DEMO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.input_mode }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "MELTWATER_API"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MELTWATER_API"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Unsupported mode"
+        }
+      },
+      "id": "3",
+      "name": "Route Input Mode",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const mentions = [\n  {published_at:'2026-08-25T08:10:00Z',headline:'Why attack-surface visibility is becoming a board topic',source:'Security Ledger',author:'Maya Chen',sentiment:'positive',reach:82000,country:'US',themes:['attack-surface visibility','board-level risk'],competitor:'AegisLayer',share_of_voice:0.42},\n  {published_at:'2026-08-25T12:40:00Z',headline:'AegisLayer adds context to cloud exposure alerts',source:'CloudSec Weekly',author:'Jon Bell',sentiment:'positive',reach:36000,country:'UK',themes:['cloud risk','attack-surface visibility'],competitor:'AegisLayer',share_of_voice:0.42},\n  {published_at:'2026-08-26T09:05:00Z',headline:'Security leaders compare exposure-management platforms',source:'Enterprise IT Review',author:'Priya Nair',sentiment:'neutral',reach:54000,country:'IN',themes:['attack-surface visibility','competitive evaluation'],competitor:'AegisLayer',share_of_voice:0.42},\n  {published_at:'2026-08-27T07:50:00Z',headline:'Practitioners debate alert fatigue in exposure management',source:'Security Forum',author:'community moderator',sentiment:'negative',reach:18000,country:'US',themes:['alert fatigue','cloud risk'],competitor:'AegisLayer',share_of_voice:0.42,risk_signal:'product complexity concern'},\n  {published_at:'2026-08-27T14:15:00Z',headline:'Analyst note: exposure management moves toward continuous evidence',source:'Tech Market Brief',author:'Owen Price',sentiment:'positive',reach:67000,country:'US',themes:['analyst validation','attack-surface visibility'],competitor:'AegisLayer',share_of_voice:0.42},\n  {published_at:'2026-08-28T11:30:00Z',headline:'What CISOs want from the next generation of security dashboards',source:'CISO Network',author:'Hana Ibrahim',sentiment:'neutral',reach:41000,country:'AE',themes:['board-level risk','analyst validation'],competitor:'AegisLayer',share_of_voice:0.42},\n  {published_at:'2026-08-30T10:05:00Z',headline:'Continuous exposure evidence enters the CISO vocabulary',source:'The Digital Enterprise',author:'Nadia Rahman',sentiment:'positive',reach:73000,country:'SG',themes:['analyst validation','breach disclosure readiness'],competitor:'AegisLayer',share_of_voice:0.42},\n  {published_at:'2026-08-31T09:15:00Z',headline:'The case for evidence-led incident communications',source:'Cyber Risk Today',author:'Maya Chen',sentiment:'positive',reach:61000,country:'US',themes:['breach disclosure readiness','regional adoption'],competitor:'AegisLayer',share_of_voice:0.42}\n];\nreturn {json:{source_mode:'DEMO',brand:'AegisLayer (fictional cybersecurity technology company)',period_start:'2026-08-25',period_end:'2026-08-31',previous_period_mention_count:6,competitor_share_of_voice:{AegisLayer:0.42,'Northstar Sentinel':0.31,CloudFence:0.27},mentions}};"
+      },
+      "id": "4",
+      "name": "Demo Meltwater-style Dataset",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.MELTWATER_API_BASE_URL }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "saved_search_id",
+              "value": "={{ $env.MELTWATER_SAVED_SEARCH_ID }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.MELTWATER_API_TOKEN }}"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "5",
+      "name": "Meltwater API Fetch (Optional)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const root = $json || {};\nconst mentions = Array.isArray(root.mentions) ? root.mentions : (Array.isArray(root.data) ? root.data : (Array.isArray(root.results) ? root.results : []));\nconst unavailable = 'unavailable — field absent or not calculable from supplied data';\nconst countBy = (values) => values.reduce((a,v)=>{ if(v !== undefined && v !== null && v !== '') a[String(v)] = (a[String(v)]||0)+1; return a; },{});\nconst top = (obj,n=5) => Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([label,count])=>({label,count}));\nconst sentiment = countBy(mentions.map(m=>String(m.sentiment||'unknown').toLowerCase()));\nconst sources = countBy(mentions.map(m=>m.source));\nconst authors = countBy(mentions.map(m=>m.author));\nconst geographies = countBy(mentions.map(m=>m.country || m.geography));\nconst themes = countBy(mentions.flatMap(m=>Array.isArray(m.themes)?m.themes:[]));\nconst previous = Number(root.previous_period_mention_count ?? root.previousPeriodMentionCount);\nconst total = mentions.length;\nconst change = Number.isFinite(previous) ? total - previous : null;\nconst changePct = Number.isFinite(previous) && previous !== 0 ? Math.round((change/previous)*1000)/10 : null;\nconst dated = mentions.filter(m=>m.published_at || m.publishedAt).sort((a,b)=>new Date(a.published_at||a.publishedAt)-new Date(b.published_at||b.publishedAt));\nconst split = Math.max(1,Math.floor(dated.length*0.6));\nconst olderThemes = countBy(dated.slice(0,split).flatMap(m=>Array.isArray(m.themes)?m.themes:[]));\nconst recentThemes = countBy(dated.slice(split).flatMap(m=>Array.isArray(m.themes)?m.themes:[]));\nconst emerging = Object.entries(recentThemes).filter(([k,v])=>v > (olderThemes[k]||0)).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([label,recent_count])=>({label,recent_count,previous_count:olderThemes[label]||0}));\nconst highImpact = mentions.filter(m=>Number.isFinite(Number(m.reach))).sort((a,b)=>Number(b.reach)-Number(a.reach)).slice(0,5).map(m=>({headline:m.headline||unavailable,source:m.source||unavailable,reach:Number(m.reach),sentiment:m.sentiment||unavailable}));\nconst competitorSov = root.competitor_share_of_voice || root.competitorShareOfVoice || unavailable;\nconst risks = mentions.filter(m=>String(m.sentiment||'').toLowerCase()==='negative' || m.risk_signal).slice(0,5).map(m=>({signal:m.risk_signal||'negative sentiment',evidence:m.headline||unavailable,source:m.source||unavailable}));\nconst positiveThemes = top(countBy(mentions.filter(m=>String(m.sentiment||'').toLowerCase()==='positive').flatMap(m=>Array.isArray(m.themes)?m.themes:[])),5);\nreturn {json:{...root,metrics:{total_mentions:total,previous_period_mentions:Number.isFinite(previous)?previous:unavailable,change_in_mentions:change===null?unavailable:change,change_percent:changePct===null?unavailable:changePct+'%',sentiment_distribution:Object.keys(sentiment).length?sentiment:unavailable,major_sources:top(sources),top_narratives:top(themes),emerging_narratives:emerging.length?emerging:unavailable,high_impact_mentions:highImpact.length?highImpact:unavailable,competitor_share_of_voice:competitorSov,notable_authors:top(authors),geographic_signals:top(geographies),unusual_spike:changePct===null?unavailable:(changePct>=50?'possible spike — validate against baseline':'no unusual spike detected'),reputational_risks:risks.length?risks:unavailable,communications_opportunities:positiveThemes.length?positiveThemes:unavailable,evidence:mentions.slice(0,10).map(m=>({headline:m.headline||unavailable,source:m.source||unavailable,sentiment:m.sentiment||unavailable,reach:m.reach??unavailable,themes:m.themes||unavailable}))}}};"
+      },
+      "id": "6",
+      "name": "Normalize & Calculate Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const m = $json.metrics;\nconst evidence = (m.evidence || []).map((e,i)=>({evidence_id:i+1,...e}));\nconst prompt = ['You are preparing an executive communications brief from supplied media intelligence.','Use only the metrics and evidence below. Do not invent coverage, outlets, reach, sentiment, competitors, events, or causes. If a field is unavailable, write unavailable. Distinguish observed evidence from interpretation.','Return exactly these sections: EXECUTIVE SUMMARY; WHAT HAPPENED; WHAT CHANGED; WHY IT MATTERS; TOP NARRATIVES; REPUTATIONAL RISKS; COMMUNICATIONS OPPORTUNITIES; RECOMMENDED ACTIONS; WATCH NEXT.','Every material assertion must cite one or more evidence_id values in square brackets.','METRICS:',JSON.stringify(m,null,2),'EVIDENCE:',JSON.stringify(evidence,null,2)].join('\\n\\n');\nreturn {json:{...$json,llm_prompt:prompt,llm_stage:'after deterministic metrics',llm_guardrail:'Evidence only; unavailable when absent; human review required'}};"
+      },
+      "id": "7",
+      "name": "LLM Analysis Prompt (Optional)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1190,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const m = $json.metrics;\nconst list = (v) => Array.isArray(v) && v.length ? v.map(x=>typeof x==='string'?x:(x.label||x.headline||JSON.stringify(x))).join('; ') : (v || 'unavailable');\nconst summary = m.total_mentions==='unavailable' ? 'Mention volume is unavailable from the supplied dataset.' : 'The demo dataset contains '+m.total_mentions+' mentions; volume changed by '+m.change_in_mentions+' ('+m.change_percent+') versus the supplied previous-period baseline.';\nconst actions = [];\nif (m.unusual_spike && String(m.unusual_spike).includes('possible spike')) actions.push('Validate the apparent volume change against the monitoring baseline before changing channel posture.');\nif (m.reputational_risks !== 'unavailable') actions.push('Assign an owner to validate each risk signal and prepare approved response options.');\nactions.push('Use the highest-reach evidence and emerging narratives to brief spokespeople and content leads.');\nactions.push('Keep any external response behind the organisation\\'s normal approval process.');\nconst brief = {EXECUTIVE_SUMMARY:summary,WHAT_HAPPENED:'Observed coverage is represented by the supplied evidence list; no claims beyond that dataset are added.',WHAT_CHANGED:'Mention-volume change: '+m.change_in_mentions+'; percentage change: '+m.change_percent+'; possible spike status: '+m.unusual_spike+'.',WHY_IT_MATTERS:'The signals point to themes that may affect stakeholder attention, trust, or message priorities; validate interpretation with subject-matter owners.',TOP_NARRATIVES:list(m.top_narratives),REPUTATIONAL_RISKS:list(m.reputational_risks),COMMUNICATIONS_OPPORTUNITIES:list(m.communications_opportunities),RECOMMENDED_ACTIONS:actions,WATCH_NEXT:'Watch the emerging narratives, high-impact sources, sentiment mix, competitor share-of-voice, and any new evidence that changes the risk assessment.'};\nreturn {json:{...$json,demo_executive_brief:brief,analysis_mode:'DEMO_DETERMINISTIC_FALLBACK',human_review_required:true}};"
+      },
+      "id": "8",
+      "name": "Demo Executive Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = {workflow_name:'Meltwater Media Intelligence → Executive Communications Brief',source_mode:$json.source_mode||'MELTWATER_API',metrics:$json.metrics||'unavailable',llm_prompt:$json.llm_prompt||'unavailable',demo_executive_brief:$json.demo_executive_brief||'unavailable',human_review_required:true,external_communication_sent:false,review_notes:'Validate evidence, interpretation, owners, and actions before use.'};\nreturn {json:output};"
+      },
+      "id": "9",
+      "name": "Human Review Packet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Independent open-source starter\\n\\nThis workflow is a neutral demonstration for a fictional cybersecurity technology company. It is not sponsored, endorsed, or maintained by Meltwater.\\n\\nDemo Mode is the default. API Mode is optional and requires a legitimate Meltwater account, current endpoint documentation, and environment variables.\\n\\nThe workflow stops at a human-review packet. It does not email, publish, post, or contact journalists.",
+        "height": 280,
+        "width": 420,
+        "color": 3
+      },
+      "id": "10",
+      "name": "Safety & Disclosure Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        180,
+        30
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Deterministic first\\n\\nNormalize and calculate metrics before any LLM handoff. The prompt requires evidence IDs and marks absent fields unavailable.\\n\\nDemo Mode uses a local fictional dataset. The optional LLM step is a handoff prompt; connect a model only after reviewing the deterministic metrics.",
+        "height": 260,
+        "width": 420,
+        "color": 5
+      },
+      "id": "11",
+      "name": "Analysis Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        900,
+        30
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## API configuration\\n\\nSet MELTWATER_API_BASE_URL to the endpoint supplied in your Meltwater contract documentation. Set MELTWATER_API_TOKEN and MELTWATER_SAVED_SEARCH_ID as environment variables or use the supported n8n credential mechanism. Never commit secrets.\\n\\nEndpoint names and response shapes can vary by Meltwater product and access tier; validate against the current official documentation before enabling API Mode.",
+        "height": 260,
+        "width": 430,
+        "color": 6
+      },
+      "id": "12",
+      "name": "Meltwater API Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        650
+      ]
+    }
+  ],
+  "connections": {
+    "Run Brief": {
+      "main": [
+        [
+          {
+            "node": "Mode Selector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mode Selector": {
+      "main": [
+        [
+          {
+            "node": "Route Input Mode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Input Mode": {
+      "main": [
+        [
+          {
+            "node": "Demo Meltwater-style Dataset",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Meltwater API Fetch (Optional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Demo Meltwater-style Dataset": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Calculate Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meltwater API Fetch (Optional)": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Calculate Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize & Calculate Metrics": {
+      "main": [
+        [
+          {
+            "node": "LLM Analysis Prompt (Optional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM Analysis Prompt (Optional)": {
+      "main": [
+        [
+          {
+            "node": "Demo Executive Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Demo Executive Brief": {
+      "main": [
+        [
+          {
+            "node": "Human Review Packet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [],
+  "pinData": {}
+}
