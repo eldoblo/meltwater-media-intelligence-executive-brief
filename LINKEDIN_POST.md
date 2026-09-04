@@ -12,7 +12,7 @@ Three design choices matter:
 - Every AI assertion is required to point back to supplied evidence IDs.
 - Meltwater API mode is opt-in and contract-specific; no token or endpoint is hardcoded.
 
-Draft contribution: **[GitHub pull request — add link after creation]**
+Draft contribution: **[GitHub draft pull request](https://github.com/eldoblo/meltwater-media-intelligence-executive-brief/pull/1)**
 
 What would make an executive media brief genuinely useful in your team: better narrative detection, clearer risk thresholds, or more actionable next steps?
 
